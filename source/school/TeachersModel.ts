@@ -1,91 +1,42 @@
-import {validate} from "./validate";
+// import {validate} from "./validate";
+
 export class TeachersModel {
+
+    private database: Map<string, TeachersModelConfig>;
+
     constructor() {
-        this.database = new Map();
-        this.schema = {
-            "name": {
-              "first": "string",
-              "last": "string"
-            },
-            "image": "string",
-            "dateOfBirth": "string", // format date
-            "emails": [
-              {
-                "email": "string",
-                "primary": true
-              }
-            ],
-            "phones": [
-              {
-                "phone": "string",
-                "primary": false
-              }
-            ],
-            "sex": "string", // male or female
-            "subjects": [
-              {
-                "subject": "string"
-              }
-            ],
-            "description": "string",
-          };
+        this.database = new Map<string, TeachersModelConfig>();
     }
 
-    add(teacher) {
-        return new Promise((resolve, reject) => {
-            if(typeof teacher !== 'object') {
-                reject("Parameter is not an object");
-            } else {
-                let id = String(Math.floor(Math.random() * new Date().getTime()));
-                teacher.id = id;
-                // validate(this.schema, teacher);
-                this.database.set(id, teacher);
-                resolve(id);
-            }
-        });
+    async add(teacher: TeachersModelConfig) {
+        let id = String(Math.floor(Math.random() * new Date().getTime()));
+        teacher.id = id;
+        // validate(this.schema, teacher);
+        this.database.set(id, teacher);
+        return id;
     }
 
-    read(teacherId) {
-        return new Promise((resolve, reject) => {
-            if(typeof teacherId !== 'string') {
-                reject("Id should be a string");
-            } else {
-                if(this.database.has(teacherId)) {
-                    resolve(this.database.get(teacherId));
-                } else {
-                    reject("Object not found");
-                }
-            }
-        });
+    async read(teacherId: string) {
+        if (!this.database.has(teacherId)) {
+            throw new Error("Object not found");
+        }
+        return this.database.get(teacherId);
     }
 
-    update(teacherId, updated) {
-        return new Promise((resolve, reject) => {
-            if(typeof teacherId !== 'string') {
-                reject("Id should be a string");
-            }
-            if(typeof updated !== 'object') {
-                reject("UpdatedProfile is not an object");
-            }
-            // validate(this.schema, updated, true);
-            let props = Object.getOwnPropertyNames(updated);
-            for(let prop of props) {
-                resolve(this.database.get(teacherId)[prop] = updated[prop]);
-            }
-        });
+    async update(teacherId: string, updated: object) {
+        // validate(this.schema, updated, true);
+        let props = Object.getOwnPropertyNames(updated);
+        for (let prop of props) {
+            console.log(this.database.get(teacherId));
+            return "update test";
+            // return this.database.get(teacherId)[prop] = updated[prop];
+        }
     }
 
-    remove(teacherId) {
-        return new Promise((resolve, reject) => {
-            if(typeof teacherId !== 'string') {
-                reject("Id should be a string");
-            } else {
-                if(this.database.has(teacherId)) {
-                    resolve(this.database.delete(teacherId));
-                } else {
-                    reject("Object not found");
-                }
-            }
-        });
+    async remove(teacherId: string) {
+        if (!this.database.has(teacherId)) {
+            throw new Error("Object not found");
+        }
+        return this.database.delete(teacherId);
     }
 }

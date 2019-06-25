@@ -1,11 +1,11 @@
 export class SubjectsModel {
-    
-    private title:string;
-    private lessons:number;
-    private description:string;
-    readonly id:string;
 
-    constructor({title, lessons, description = null}:{title:string, lessons:number, description?:string}) {
+    private title: string;
+    private lessons: number;
+    private description: string;
+    readonly id: string;
+
+    constructor({ title, lessons, description = null }: SubjectsModelConfig) {
         this.title = title;
         this.lessons = lessons;
         this.description = description;

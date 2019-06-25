@@ -1,46 +1,40 @@
-import { SubjectsModel } from "./index";
+import { SubjectsModel } from "./SubjectsModel";
 
 export class LMSModel {
 
-    private database:Map<string,object>;
+    private database: Map<string, SubjectsModel>;
 
     constructor() {
-        this.database = new Map<string,object>();
+        this.database = new Map<string, SubjectsModel>();
     }
 
-    async add(subject:SubjectsModel) {
-        let {id} = subject;
+    async add(subject: SubjectsModel) {
+        let { id } = subject;
         this.database.set(id, subject);
         return id;
     }
 
-    async remove(subject:SubjectsModel) {
-        let {id} = subject;
-        if(this.database.has(id)) {
-            return this.database.delete(id);
-        } else {
+    async remove(subject: SubjectsModel) {
+        let { id } = subject;
+        if (!this.database.has(id)) {
             throw new Error("Object not found");
         }
+        return this.database.delete(id);
     }
 
-    async verify(subject:SubjectsModel) {
-        let {id} = subject;
-        if(this.database.has(id)) {
-            return true;
-        } else {
-            throw new Error(String(false));
+    async verify(subject: SubjectsModel) {
+        let { id } = subject;
+        return this.database.has(id) ? true : false;
+    }
+
+    async read(id: string) {
+        if (!this.database.has(id)) {
+            throw new Error("Object not found");
         }
-    }
-
-    async read(id:string) {
         return this.database.get(id);
     }
 
     async readAll() {
-        if(arguments.length > 0) {
-            throw new Error("readAll() does not receive any parameters");
-        } else {
-            return [...this.database.values()];
-        }
+        return [...this.database.values()];
     }
 }
