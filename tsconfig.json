@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
+    "strictNullChecks": true,
     "target": "es5",
     "lib": ["es2015", "dom"],
-    "downlevelIteration": true,
     "experimentalDecorators": true,
     "outDir": "build"
   },

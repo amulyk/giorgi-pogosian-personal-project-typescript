@@ -1,14 +1,14 @@
 interface PupilsModelConfig {
     name: {
         first: string,
-        last: string
+        last: string,
     };
     image: string;
     dateOfBirth: string;
-    phones:{
+    phones: Array<{
         phone: string,
-        primary: boolean
-    }[];
+        primary: boolean,
+    }>;
     sex: string;
     description?: string;
     id?: string;
